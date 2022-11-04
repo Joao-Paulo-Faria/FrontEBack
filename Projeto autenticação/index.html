@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.2/axios.min.js"></script>
+    <script>
+      const http = axios.create({
+        baseURL: "https://localhost:7297/",
+        timeout: 1000,
+      });
+    </script>
+    <script>
+      const fKey = (key) =>
+        (function until(value, comp = value) {
+          const result = value.replace(/\.([A-z0-9]*)(\.|$)/, "[$1]$2");
+
+          return comp !== result ? until(result, value) : result;
+        })(key);
+
+      function populateFormData(values, form = new FormData(), base = "") {
+        Object.keys(values).forEach((key) => {
+          const value = values[key];
+
+          if (
+            typeof value == "string" ||
+            typeof value == "number" ||
+            typeof value == "boolean" ||
+            value instanceof File ||
+            value instanceof Blob
+          ) {
+            form.append(fKey(`${base}${key}`), value);
+          } else if (typeof value == "object") {
+            populateFormData(value, form, `${base}${key}.`);
+          }
+        });
+
+        return form;
+      }
+    </script>
+  </head>
+  <body>
+    <main class="container">
+      <div id="listaEstados"></div>
+      <section class="card">
+        <h1>Entrar</h1>
+        <section id="msgError"></section>
+
+        <section class="label-float">
+          <input type="text" id="usuario" placeholder="" required />
+          <label id="userlabel" for="usuario">Usuário</label>
+        </section>
+
+        <section class="label-float">
+          <input type="password" id="senhalog" placeholder="" required />
+          <label id="senhalabel" for="senha">Senha</label>
+          <i class="fa fa-eye" aria-hidden="true"></i>
+        </section>
+
+        <section class="justify-center">
+          <button onclick="entrar()">Entrar</button>
+        </section>
+
+        <section class="justify-center">
+          <hr />
+        </section>
+
+        <section class="nao-tem-conta">
+          <p>Não tem uma conta?</p>
+          <a href="http://127.0.0.1:5500/index2.html">Cadastre-se</a>
+        </section>
+      </section>
+    </main>
+    <script src="script2.js"></script>
+  </body>
+</html>
